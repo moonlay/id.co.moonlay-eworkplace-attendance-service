@@ -51,10 +51,13 @@ namespace EWorkplaceAbsensiService.WebApi.Controllers
                 _validateService.Validate(Absensi);
 
                 await _AbsensiService.Create(Absensi);
-
-                var result = new ResultFormatter(API_VERSION, General.CREATED_STATUS_CODE, General.OK_MESSAGE)
-                    .Ok();
-                return Created(string.Concat(Request.Path, "/", 0), result);
+                return CreatedAtRoute(
+                "Get",
+                new { Id = Absensi.Id },
+                Absensi);
+                //var result = new ResultFormatter(API_VERSION, General.CREATED_STATUS_CODE, General.OK_MESSAGE)
+                //  .Ok();
+                //return Created(string.Concat(Request.Path, "/", 0), result);
             }
             catch (ServiceValidationExeption e)
             {
