@@ -154,7 +154,8 @@ namespace EWorkplaceAbsensiService.WebApi
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetService<AbsensiDbContext>();
-                context.Database.Migrate();
+                //ini untuk migrate
+                //context.Database.Migrate();
             }
             app.UseAuthentication();
             app.UseCors("CorePolicy");
