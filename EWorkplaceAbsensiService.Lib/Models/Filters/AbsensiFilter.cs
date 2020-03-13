@@ -23,6 +23,7 @@ namespace EWorkplaceAbsensiService.Lib.Models.Filters
         public string CheckIn { get; set; }
         public string HeadDivision { get; set; }
 
+        public string NotState { get; set; }
         public string ApprovalByAdmin { get; set; }
         public SortBy? SortByUsername { get; set; }
 
