@@ -92,8 +92,12 @@ namespace EWorkplaceAbsensiService.Lib.Services.Absensis
             if (!string.IsNullOrEmpty(filter.State))
                 query = query.Where(o => o.State.Contains(filter.State));
 
+            if(!string.IsNullOrEmpty(filter.NotState))
+                query = query.Where(o => !o.State.Contains(filter.NotState));
+
             if (!string.IsNullOrEmpty(filter.CheckIn))
                 query = query.Where(o => o.CheckIn.ToString().Contains(filter.CheckIn));
+
 
             if (!string.IsNullOrEmpty(filter.Approval))
                 query = query.Where(o => o.Approval.Contains(filter.Approval));
