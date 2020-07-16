@@ -5,6 +5,13 @@ using EWorkplaceAbsensiService.Lib.Helpers.ValidateService;
 using EWorkplaceAbsensiService.Lib.Services.Absensis;
 using EWorkplaceAbsensiService.WebApi.Uploads;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+using EWorkplaceAbsensiService.Lib.Services.Activities;
+using EWorkplaceAbsensiService.Lib.Services.ActivityCategories;
+using EWorkplaceAbsensiService.Lib.Services.Projects;
+using EWorkplaceAbsensiService.Lib.Services.Reports;
+using EWorkplaceAbsensiService.Lib.Services.TaskManagement;
+using EWorkplaceAbsensiService.Lib.Services.TimeSheets;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
@@ -54,7 +61,12 @@ namespace EWorkplaceAbsensiService.WebApi
                 //.AddDbContext<AbsensiDbContext>(options => options.UseSqlServer(connectionString))
                 .AddDbContext<AbsensiDbContext>(options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("EWorkplaceAbsensiService.WebApi")))
                 .AddTransient<IAbsensiService, AbsensiService>();
-
+            services.AddTransient<IProjectService, ProjectService>();
+            services.AddTransient<IActivityCategoryService, ActivityCategoryService>();
+            services.AddTransient<IActivityService, ActivityService>();
+            services.AddTransient<ITaskManagementService, TaskManagementService>();
+            services.AddTransient<ITimeSheetService, TimeSheetService>();
+            services.AddTransient<IReportService, ReportService>();
 
             RegisterServices(services);
 
