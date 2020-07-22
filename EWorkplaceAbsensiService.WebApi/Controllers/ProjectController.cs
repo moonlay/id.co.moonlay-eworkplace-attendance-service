@@ -73,7 +73,7 @@ namespace EWorkplaceAbsensiService.WebApi.Controllers
             }
             catch (Exception e)
             {
-                var result = new ResultFormatter(API_VERSION, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                var result = new ResultFormatter(API_VERSION, General.INTERNAL_ERROR_STATUS_CODE, e.Message + "\n" + e.InnerException != null ? e.InnerException.Message : "" + "\n" + e.StackTrace)
                     .Fail();
                 return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, result);
             }
