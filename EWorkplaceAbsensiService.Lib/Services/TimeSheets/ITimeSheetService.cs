@@ -1,4 +1,5 @@
 ﻿using EWorkplaceAbsensiService.Lib.Models;
+using EWorkplaceAbsensiService.Lib.Models.ItemExcel.ItemExcel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,8 @@ namespace EWorkplaceAbsensiService.Lib.Services.TimeSheets
 
         IQueryable<Object> getByProjectAndEmployee(int projectid, int empid);
 
+        List<ItemExcel> GetExcel();
+
+        List<ItemExcel> GetExcel(int projectid,int empid);
     }
 }

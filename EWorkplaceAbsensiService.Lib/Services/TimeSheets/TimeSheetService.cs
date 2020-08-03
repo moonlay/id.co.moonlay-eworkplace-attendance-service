@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Com.Moonlay.Models;
+using EWorkplaceAbsensiService.Lib.Models.ItemExcel.ItemExcel;
 
 namespace EWorkplaceAbsensiService.Lib.Services.TimeSheets
 {
@@ -58,17 +59,18 @@ namespace EWorkplaceAbsensiService.Lib.Services.TimeSheets
                        TimeSheetId = t.Id,
                        ProjectId = t.ProjectId,
                        ProjectName = p.projectName,
+                       ClientName = p.ClientName,
                        Task_id = t.TaskManagementId,
-                       Task_name = ts.TaskName,
-                       Task_status = ts.TaskStatus,
-                       StardDate = ts.StartDate,
+                       TaskName = ts.TaskName,
+                       Taskstatus = ts.TaskStatus,
+                       TaskDifficult = ts.TaskDifficulty,
+                       StartDate = ts.StartDate,
                        EndDate = ts.EndDate,
                        StartTime = t.StartTime,
                        EndTime = t.EndTime,
                        Duration = t.Duration,
                        EmployeeId = ts.EmployeeId,
-                       EmployeeName = ts.EmployeeName,
-                       IsDelete = ts.IsDeleted,
+                       EmployeeName = ts.EmployeeName
                    }).AsNoTracking();
         }
 
@@ -144,5 +146,99 @@ namespace EWorkplaceAbsensiService.Lib.Services.TimeSheets
                         IsDelete = ts.IsDeleted,
                     }).AsNoTracking();
         }
+
+        public List<ItemExcel> GetExcel()
+        {
+            List<ItemExcel> list = new List<ItemExcel>();
+            var query = (from p in _projects
+                         join t in _TimeSheetSet
+                         on p.Id equals t.ProjectId
+                         join ts in _taskManangement
+                         on t.TaskManagementId equals ts.Id
+                         select new
+                         {
+                             TimeSheetId = t.Id,
+                             ProjectId = t.ProjectId,
+                             ProjectName = p.projectName,
+                             ClientName = p.ClientName,
+                             Task_id = t.TaskManagementId,
+                             TaskName = ts.TaskName,
+                             Taskstatus = ts.TaskStatus,
+                             TaskDifficult = ts.TaskDifficulty,
+                             StartDate = ts.StartDate,
+                             EndDate = ts.EndDate,
+                             StartTime = t.StartTime,
+                             EndTime = t.EndTime,
+                             Duration = t.Duration,
+                             EmployeeId = ts.EmployeeId,
+                             EmployeeName = ts.EmployeeName
+                           }).AsNoTracking();
+            foreach (var item in query)
+            {
+                ItemExcel excel = new ItemExcel();
+                excel.ReportId = item.TimeSheetId;
+                excel.EmployeeName = item.EmployeeName;
+                excel.ClientName = item.ClientName;
+                excel.ProjectName = item.ProjectName;
+                excel.TaskName = item.TaskName;
+                excel.TaskDifficult = item.TaskDifficult;
+                excel.StartDate = item.StartDate;
+                excel.EndDate = item.EndDate;
+                excel.StartTime = item.StartTime;
+                excel.EndTime = item.EndTime;
+                excel.Duration = item.Duration;
+                list.Add(excel);
+            }
+            return list;
+        }
+
+        public List<ItemExcel> GetExcel(int projectid, int empid)
+        {
+            List<ItemExcel> list = new List<ItemExcel>();
+            var query = (from p in _projects
+                         join t in _TimeSheetSet
+                         on p.Id equals t.ProjectId
+                         join ts in _taskManangement
+                         on t.TaskManagementId equals ts.Id
+                         where t.ProjectId == projectid && ts.ProjectId == projectid
+                         && ts.EmployeeId == empid
+                         select new
+                         {
+                             TimeSheetId = t.Id,
+                             ProjectId = t.ProjectId,
+                             ProjectName = p.projectName,
+                             ClientName = p.ClientName,
+                             Task_id = t.TaskManagementId,
+                             TaskDifficult = ts.TaskDifficulty,
+                             TaskName = ts.TaskName,
+                             Task_status = ts.TaskStatus,
+                             StartDate = ts.StartDate,
+                             EndDate = ts.EndDate,
+                             StartTime = t.StartTime,
+                             EndTime = t.EndTime,
+                             Duration = t.Duration,
+                             EmployeeId = ts.EmployeeId,
+                             EmployeeName = ts.EmployeeName,
+                             IsDelete = ts.IsDeleted,
+                         }).AsNoTracking();
+            foreach (var item in query)
+            {
+                ItemExcel excel = new ItemExcel();
+                excel.ReportId = item.TimeSheetId;
+                excel.EmployeeName = item.EmployeeName;
+                excel.ClientName = item.ClientName;
+                excel.ProjectName = item.ProjectName;
+                excel.TaskName = item.TaskName;
+                excel.TaskDifficult = item.TaskDifficult;
+                excel.StartDate = item.StartDate;
+                excel.EndDate = item.EndDate;
+                excel.StartTime = item.StartTime;
+                excel.EndTime = item.EndTime;
+                excel.Duration = item.Duration;
+                list.Add(excel);
+            }
+            return list;
+        }
     }
-}
+    }
+
