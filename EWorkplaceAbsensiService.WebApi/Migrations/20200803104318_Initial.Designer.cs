@@ -11,8 +11,8 @@ using System;
 namespace EWorkplaceAbsensiService.WebApi.Migrations
 {
     [DbContext(typeof(AbsensiDbContext))]
-    [Migration("20200722024115_TimeSheetModuleApi")]
-    partial class TimeSheetModuleApi
+    [Migration("20200803104318_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
