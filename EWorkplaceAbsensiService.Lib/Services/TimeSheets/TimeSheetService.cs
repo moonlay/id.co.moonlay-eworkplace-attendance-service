@@ -54,6 +54,7 @@ namespace EWorkplaceAbsensiService.Lib.Services.TimeSheets
                    on p.Id equals t.ProjectId
                    join ts in _taskManangement
                    on t.TaskManagementId equals ts.Id
+				   orderby t.Id descending
                    select new
                    {
                        TimeSheetId = t.Id,
@@ -98,6 +99,7 @@ namespace EWorkplaceAbsensiService.Lib.Services.TimeSheets
                     join ts in _taskManangement
                     on t.TaskManagementId equals ts.Id
                     where t.ProjectId == id && ts.ProjectId == id
+					orderby t.Id descending
                     select new
                     {
                         TimeSheetId = t.Id,
@@ -127,6 +129,7 @@ namespace EWorkplaceAbsensiService.Lib.Services.TimeSheets
                     on t.TaskManagementId equals ts.Id
                     where t.ProjectId == projectid && ts.ProjectId == projectid
                     && ts.EmployeeId == empid
+					orderby t.Id descending
                     select new
                     {
                         TimeSheetId = t.Id,
@@ -155,6 +158,7 @@ namespace EWorkplaceAbsensiService.Lib.Services.TimeSheets
                          on p.Id equals t.ProjectId
                          join ts in _taskManangement
                          on t.TaskManagementId equals ts.Id
+						 orderby t.Id descending
                          select new
                          {
                              TimeSheetId = t.Id,
@@ -202,6 +206,7 @@ namespace EWorkplaceAbsensiService.Lib.Services.TimeSheets
                          on t.TaskManagementId equals ts.Id
                          where t.ProjectId == projectid && ts.ProjectId == projectid
                          && ts.EmployeeId == empid
+						 orderby t.Id descending
                          select new
                          {
                              TimeSheetId = t.Id,
