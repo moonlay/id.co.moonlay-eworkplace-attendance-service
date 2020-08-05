@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Com.Moonlay.Models;
+using EWorkplaceAbsensiService.Lib.Models.ItemExcel.ItemExcel;
 
 namespace EWorkplaceAbsensiService.Lib.Services.Reports
 {
@@ -83,6 +84,49 @@ namespace EWorkplaceAbsensiService.Lib.Services.Reports
             dbModel.ProjectId = model.ProjectId;
             dbModel.TimesheetId = model.TimesheetId;
             return _dbContext.SaveChangesAsync();
+        }
+
+        public List<ItemExcel> GetExcel()
+        {
+            List<ItemExcel> list = new List<ItemExcel>();
+            var query = from p in _projectSet
+                        join r in _reportSet
+                        on p.Id equals r.ProjectId
+                        join t in _timeSet
+                        on r.TimesheetId equals t.Id
+                        join task in _taskSet
+                        on t.TaskManagementId equals task.Id
+                        select new
+                        {
+                            ReportId = r.Id,
+                            EmployeeName = task.EmployeeName,
+                            ClientName = p.ClientName,
+                            ProjectName = p.projectName,
+                            TaskName = task.TaskName,
+                            TaskDifficult = task.TaskDifficulty,
+                            StartDate = task.StartDate,
+                            EndDate = task.EndDate,
+                            StartTime = t.StartTime,
+                            EndTime = t.EndTime,
+                            Duration = t.Duration
+                        };
+            foreach(var item in query)
+            {
+                ItemExcel excel = new ItemExcel();
+                excel.ReportId = item.ReportId;
+                excel.EmployeeName = item.EmployeeName;
+                excel.ClientName = item.ClientName;
+                excel.ProjectName = item.ProjectName;
+                excel.TaskName = item.TaskName;
+                excel.TaskDifficult = item.TaskDifficult;
+                excel.StartDate = item.StartDate;
+                excel.EndDate = item.EndDate;
+                excel.StartTime = item.StartTime;
+                excel.EndTime = item.EndTime;
+                excel.Duration = item.Duration;
+                list.Add(excel);
+            }
+            return list;
         }
     }
 }
