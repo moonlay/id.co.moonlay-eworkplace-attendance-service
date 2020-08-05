@@ -19,6 +19,11 @@ namespace EWorkplaceAbsensiService.Lib
         public DbSet<TimeSheet> TimeSheet { get; set; }
         public DbSet<Report> Reports { get; set; }
 
+        public DbSet<Transport> Transports { get; set; }
+        public DbSet<Overtime> Overtimes { get; set; }
+        public DbSet<Medical> Medicals { get; set; }
+        public DbSet<Other> Others { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

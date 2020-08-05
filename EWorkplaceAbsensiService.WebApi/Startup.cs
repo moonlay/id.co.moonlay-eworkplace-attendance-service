@@ -1,25 +1,26 @@
-﻿using AutoMapper;
-using EWorkplaceAbsensiService.Lib;
+﻿using EWorkplaceAbsensiService.Lib;
 using EWorkplaceAbsensiService.Lib.Helpers.IdentityService;
 using EWorkplaceAbsensiService.Lib.Helpers.ValidateService;
 using EWorkplaceAbsensiService.Lib.Services.Absensis;
 using EWorkplaceAbsensiService.Lib.Services.Activities;
 using EWorkplaceAbsensiService.Lib.Services.ActivityCategories;
+using EWorkplaceAbsensiService.Lib.Services.Medicals;
+using EWorkplaceAbsensiService.Lib.Services.Others;
+using EWorkplaceAbsensiService.Lib.Services.Overtimes;
 using EWorkplaceAbsensiService.Lib.Services.Projects;
 using EWorkplaceAbsensiService.Lib.Services.Reports;
 using EWorkplaceAbsensiService.Lib.Services.TaskManagement;
 using EWorkplaceAbsensiService.Lib.Services.TimeSheets;
+using EWorkplaceAbsensiService.Lib.Services.Transports;
 using EWorkplaceAbsensiService.WebApi.Uploads;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using MongoDB.Driver;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Collections.Generic;
@@ -57,8 +58,8 @@ namespace EWorkplaceAbsensiService.WebApi
             string secret = Configuration["Secret"];
 
             services
-                //.AddDbContext<AbsensiDbContext>(options => options.UseSqlServer(connectionString))
-                .AddDbContext<AbsensiDbContext>(options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("EWorkplaceAbsensiService.WebApi")))
+                .AddDbContext<AbsensiDbContext>(options => options.UseSqlServer(connectionString))
+                //.AddDbContext<AbsensiDbContext>(options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("EWorkplaceAbsensiService.WebApi")))
                 .AddTransient<IAbsensiService, AbsensiService>();
             services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<IActivityCategoryService, ActivityCategoryService>();
@@ -66,6 +67,15 @@ namespace EWorkplaceAbsensiService.WebApi
             services.AddTransient<ITaskManagementService, TaskManagementService>();
             services.AddTransient<ITimeSheetService, TimeSheetService>();
             services.AddTransient<IReportService, ReportService>();
+
+            services
+                .AddTransient<ITransportService, TransportService>();
+            services
+                .AddTransient<IOvertimeService, OvertimeService>();
+            services
+                .AddTransient<IOtherService, OtherService>();
+            services
+                .AddTransient<IMedicalService, MedicalService>();
 
             RegisterServices(services);
 
@@ -130,6 +140,7 @@ namespace EWorkplaceAbsensiService.WebApi
                 .AddJsonOptions(options =>
                 { options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                   //options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+                  options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
                 });
 
             #region Swagger
